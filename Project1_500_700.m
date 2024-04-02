@@ -65,6 +65,7 @@ xlabel('samples');
 ylabel('magnitude');
 title('polar rz');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%statistical mean 
 unipolar_nrz_mean   = zeros(1,700);     
 polar_nrz_mean      = zeros(1,700);     
 polar_rz_mean       = zeros(1,700);     
@@ -136,6 +137,25 @@ axis([1 500 -6 6]);
 xlabel('time in samples');
 ylabel('magnitude');
 title('Time mean of polar rz');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% time mean for one waveform
+unipolar_nrz_mean_t = 0;    
+polar_nrz_mean_t = 0;     
+polar_rz_mean_t = 0;     
+for i = 1 : 700
+    %choose any waveform (let it 3)
+unipolar_nrz_mean_t   = unipolar_nrz_mean_t + unipolar_nrz_delayed(3,i);
+polar_nrz_mean_t      = polar_nrz_mean_t + Polar_nrz_delayed(3,i);
+polar_rz_mean_t       = polar_rz_mean_t + Polar_rz_delayed(3,i);
+
+end
+unipolar_nrz_time_mean   = unipolar_nrz_mean_t /700;
+polar_nrz_mean_time_mean    = polar_nrz_mean_t /700;
+polar_rz_mean_time_mean     = polar_rz_mean_t /700;
+fprintf('time mean of one waveform of unipolar NRZ is: %f\n', unipolar_nrz_time_mean);
+fprintf('time mean of one waveform of polar NRZ is: %f\n', polar_nrz_mean_time_mean);
+fprintf('time mean of one waveform of polar RZ is: %f\n', polar_rz_mean_time_mean);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Calculating statistical Autocorrelation
 s_t1 = 351;       
@@ -223,14 +243,14 @@ ylabel('magnitude');
 title('statistical ACF of polar rz for constatnt taw');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%time autocorrelation
+%time autocorrelation for all waveforms
 R_unipolar_nrz_t = zeros (1, 300);    
 R_polar_nrz_t = zeros (1, 300);    
 R_polar_rz_t = zeros (1, 300);    
 taw2 = -150: 149;         
 for i = taw2
 M = i + 151; 
- for n1 = 151: 551       
+ for n1 = 151: 550       
  R_unipolar_nrz_t(M) = R_unipolar_nrz_t(M) + unipolar_nrz_delayed(1,n1)* unipolar_nrz_delayed(1,n1+i);
  R_polar_nrz_t(M) = R_polar_nrz_t(M) + Polar_nrz_delayed(1,n1)* Polar_nrz_delayed(1,n1+i);
  R_polar_rz_t(M) = R_polar_rz_t(M) + Polar_rz_delayed(1,n1)* Polar_rz_delayed(1,n1+i);
@@ -288,15 +308,16 @@ for i = 352: 700
     amp_polar_rz(i) = amplitude_polar_rz(1052-i);
 end
 
-x =(-700/2:(700/2)-1) ;
+x =(-700/2:(700/2)-1);
 x_values =(fs*x)/700;
 figure('Name','power spectral density');
 subplot(3,1,1);
 plot(x_values,amp_unipolar_nrz);
+ylim([0 0.2])
+xlim([-50 50])
 grid on
 xlabel('freq');
 ylabel('magnitude');
-ylim([-0.1,0.2]);
 title('PSD of unipolar nrz');
 subplot(3,1,2);
 plot(x_values,amp_polar_nrz);

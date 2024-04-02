@@ -297,6 +297,7 @@ plot(x_values,amp_unipolar_nrz);
 grid on
 xlabel('freq');
 ylabel('magnitude');
+ylim([-0.1,0.2]);
 title('PSD of unipolar nrz');
 subplot(3,1,2);
 plot(x_values,amp_polar_nrz);
